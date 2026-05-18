@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>IPS Dashboard</title>
+    <link rel="stylesheet" href="recursos/estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h1>IPS - Panel de Control</h1>
+
+<div class="grid">
+
+    <div class="card">
+        <h2>Paquetes en tiempo real</h2>
+        <canvas id="grafica-paquetes"></canvas>
+    </div>
+
+    <div class="card">
+        <h2>IPs bloqueadas</h2>
+        <canvas id="grafica-bloqueadas"></canvas>
+    </div>
+
+    <div class="card">
+        <h2>Gestión de IPs</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>IP</th>
+                    <th>Protocolo</th>
+                    <th>Paquetes</th>
+                    <th>Hora</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-ips"></tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Nivel de seguridad</h2>
+        <canvas id="grafica-seguridad"></canvas>
+    </div>
+
+</div>
+
+<script src="recursos/app.js"></script>
+</body>
+</html>
