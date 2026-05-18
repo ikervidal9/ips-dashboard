@@ -2,48 +2,92 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IPS Dashboard</title>
     <link rel="stylesheet" href="recursos/estilos.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-<h1>IPS - Panel de Control</h1>
-
-<div class="grid">
-
-    <div class="card">
-        <h2>Paquetes en tiempo real</h2>
-        <canvas id="grafica-paquetes"></canvas>
+<header class="topbar">
+    <div>
+        <p class="eyebrow">Sistema de Prevención de Intrusiones</p>
+        <h1>IPS Dashboard</h1>
     </div>
+    <div class="status-pill" id="estado-sistema">Seguro</div>
+</header>
 
-    <div class="card">
-        <h2>IPs bloqueadas</h2>
-        <canvas id="grafica-bloqueadas"></canvas>
-    </div>
+<main class="dashboard">
+    <section class="kpi-grid">
+        <article class="kpi">
+            <span class="kpi-label">Paquetes detectados</span>
+            <strong id="kpi-paquetes">0</strong>
+        </article>
 
-    <div class="card">
-        <h2>Gestión de IPs</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>IP</th>
-                    <th>Protocolo</th>
-                    <th>Paquetes</th>
-                    <th>Hora</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody id="tabla-ips"></tbody>
-        </table>
-    </div>
+        <article class="kpi">
+            <span class="kpi-label">IPs bloqueadas</span>
+            <strong id="kpi-ips">0</strong>
+        </article>
 
-    <div class="card">
-        <h2>Nivel de seguridad</h2>
-        <canvas id="grafica-seguridad"></canvas>
-    </div>
+        <article class="kpi">
+            <span class="kpi-label">Última alerta</span>
+            <strong id="kpi-ultima">Sin alertas</strong>
+        </article>
 
-</div>
+        <article class="kpi">
+            <span class="kpi-label">Actualización</span>
+            <strong id="kpi-actualizacion">--:--:--</strong>
+        </article>
+    </section>
+
+    <section class="panel-grid">
+        <article class="panel panel-large">
+            <div class="panel-header">
+                <h2>Tráfico en tiempo real</h2>
+                <span>Paquetes acumulados</span>
+            </div>
+            <canvas id="grafica-paquetes"></canvas>
+        </article>
+
+        <article class="panel">
+            <div class="panel-header">
+                <h2>IPs bloqueadas</h2>
+                <span>Total actual</span>
+            </div>
+            <canvas id="grafica-bloqueadas"></canvas>
+        </article>
+
+        <article class="panel">
+            <div class="panel-header">
+                <h2>Nivel de seguridad</h2>
+                <span>Estado operativo</span>
+            </div>
+            <canvas id="grafica-seguridad"></canvas>
+        </article>
+
+        <article class="panel panel-table">
+            <div class="panel-header">
+                <h2>Eventos detectados</h2>
+                <span>Gestión manual de bloqueos</span>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>IP</th>
+                            <th>Protocolo</th>
+                            <th>Paquetes</th>
+                            <th>Hora</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-ips"></tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+</main>
 
 <script src="recursos/app.js"></script>
 </body>

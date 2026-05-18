@@ -1,27 +1,163 @@
+:root {
+    --bg: #0f172a;
+    --panel: #111827;
+    --panel-soft: #172033;
+    --border: #263244;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --blue: #38bdf8;
+    --green: #22c55e;
+    --yellow: #facc15;
+    --red: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
+    margin: 0;
+    min-height: 100vh;
     font-family: Arial, sans-serif;
-    background: #f5f6fa;
-    padding: 30px;
+    background: #0f172a;
+    color: var(--text);
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 36px;
+    border-bottom: 1px solid var(--border);
+    background: #111827;
+}
+
+.eyebrow {
+    margin: 0 0 6px;
+    color: var(--blue);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+h1,
+h2 {
+    margin: 0;
 }
 
 h1 {
+    font-size: 30px;
+}
+
+h2 {
+    font-size: 17px;
+}
+
+.status-pill {
+    min-width: 110px;
+    padding: 10px 16px;
+    border-radius: 999px;
     text-align: center;
-    margin-bottom: 30px;
+    font-weight: 700;
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--green);
+    border: 1px solid rgba(34, 197, 94, 0.45);
 }
 
-.grid {
+.status-alerta {
+    background: rgba(250, 204, 21, 0.15);
+    color: var(--yellow);
+    border-color: rgba(250, 204, 21, 0.45);
+}
+
+.status-ataque {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--red);
+    border-color: rgba(239, 68, 68, 0.45);
+}
+
+.dashboard {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 28px 24px 40px;
+}
+
+.kpi-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    max-width: 1100px;
-    margin: auto;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+.kpi,
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+}
+
+.kpi {
+    padding: 18px;
+}
+
+.kpi-label {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.kpi strong {
+    display: block;
+    font-size: 26px;
+}
+
+.panel-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 18px;
+}
+
+.panel {
+    padding: 18px;
+    min-height: 320px;
+}
+
+.panel-large {
+    min-height: 380px;
+}
+
+.panel-table {
+    grid-column: 1 / -1;
+    min-height: 0;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.panel-header span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+canvas {
+    width: 100%;
+    max-height: 280px;
+}
+
+.panel-large canvas {
+    max-height: 330px;
+}
+
+.table-wrap {
+    overflow-x: auto;
 }
 
 table {
@@ -29,25 +165,75 @@ table {
     border-collapse: collapse;
 }
 
-th, td {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    text-align: center;
+th,
+td {
+    padding: 13px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    font-size: 14px;
+}
+
+th {
+    color: var(--muted);
+    font-weight: 700;
+}
+
+td {
+    color: var(--text);
 }
 
 button {
-    padding: 5px 10px;
     border: none;
-    border-radius: 5px;
-    background: #d32f2f;
+    border-radius: 6px;
+    padding: 8px 12px;
+    background: var(--red);
     color: white;
     cursor: pointer;
+    font-weight: 700;
 }
 
 button:hover {
-    background: #b71c1c;
+    background: #dc2626;
 }
 
-canvas {
-    max-height: 250px;
+.empty-row {
+    color: var(--muted);
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 24px;
+    }
+
+    .kpi-grid,
+    .panel-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-table {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .dashboard {
+        padding: 18px 12px 28px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .kpi strong {
+        font-size: 22px;
+    }
+
+    th,
+    td {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
 }

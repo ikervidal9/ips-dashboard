@@ -8,6 +8,9 @@ let historialPaquetes = [];
 let etiquetasTiempo = [];
 
 function crearGraficas() {
+    Chart.defaults.color = "#94a3b8";
+    Chart.defaults.borderColor = "#263244";
+
     graficaPaquetes = new Chart(
         document.getElementById("grafica-paquetes"),
         {
@@ -17,10 +20,26 @@ function crearGraficas() {
                 datasets: [{
                     label: "Paquetes",
                     data: [],
-                    borderColor: "#1976d2",
-                    backgroundColor: "rgba(25, 118, 210, 0.15)",
-                    tension: 0.3
+                    borderColor: "#38bdf8",
+                    backgroundColor: "rgba(56, 189, 248, 0.14)",
+                    fill: true,
+                    tension: 0.35,
+                    pointRadius: 3
                 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         }
     );
@@ -30,12 +49,30 @@ function crearGraficas() {
         {
             type: "bar",
             data: {
-                labels: ["IPs bloqueadas"],
+                labels: ["Bloqueadas"],
                 datasets: [{
-                    label: "Cantidad",
+                    label: "IPs",
                     data: [0],
-                    backgroundColor: "#d32f2f"
+                    backgroundColor: "#ef4444",
+                    borderRadius: 6
                 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
             }
         }
     );
@@ -48,11 +85,38 @@ function crearGraficas() {
                 labels: ["Seguro", "Alerta", "Ataque"],
                 datasets: [{
                     data: [1, 0, 0],
-                    backgroundColor: ["#4caf50", "#ffeb3b", "#f44336"]
+                    backgroundColor: ["#22c55e", "#facc15", "#ef4444"],
+                    borderColor: "#111827",
+                    borderWidth: 4
                 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "68%",
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                }
             }
         }
     );
+}
+
+function setEstado(nombreEstado) {
+    const estado = document.getElementById("estado-sistema");
+
+    estado.textContent = nombreEstado;
+    estado.classList.remove("status-alerta", "status-ataque");
+
+    if (nombreEstado === "Alerta") {
+        estado.classList.add("status-alerta");
+    }
+
+    if (nombreEstado === "Ataque") {
+        estado.classList.add("status-ataque");
+    }
 }
 
 function actualizarDashboard() {
@@ -61,6 +125,7 @@ function actualizarDashboard() {
         .then(data => {
             let totalPaquetes = 0;
             let ips = new Set();
+            let ultimaAlerta = "Sin alertas";
 
             const tabla = document.getElementById("tabla-ips");
             tabla.innerHTML = "";
@@ -68,6 +133,7 @@ function actualizarDashboard() {
             data.forEach(evento => {
                 totalPaquetes += evento.packets;
                 ips.add(evento.ip);
+                ultimaAlerta = evento.time || "Sin hora";
 
                 tabla.innerHTML += `
                     <tr>
@@ -84,7 +150,20 @@ function actualizarDashboard() {
                 `;
             });
 
+            if (data.length === 0) {
+                tabla.innerHTML = `
+                    <tr>
+                        <td class="empty-row" colspan="5">No hay eventos detectados</td>
+                    </tr>
+                `;
+            }
+
             const ahora = new Date().toLocaleTimeString();
+
+            document.getElementById("kpi-paquetes").textContent = totalPaquetes;
+            document.getElementById("kpi-ips").textContent = ips.size;
+            document.getElementById("kpi-ultima").textContent = ultimaAlerta;
+            document.getElementById("kpi-actualizacion").textContent = ahora;
 
             etiquetasTiempo.push(ahora);
             historialPaquetes.push(totalPaquetes);
@@ -104,22 +183,28 @@ function actualizarDashboard() {
             let seguro = 1;
             let alerta = 0;
             let ataque = 0;
+            let estado = "Seguro";
 
             if (ips.size === 0) {
                 seguro = 1;
             } else if (ips.size < 3) {
                 seguro = 0;
                 alerta = 1;
+                estado = "Alerta";
             } else {
                 seguro = 0;
                 ataque = 1;
+                estado = "Ataque";
             }
+
+            setEstado(estado);
 
             graficaSeguridad.data.datasets[0].data = [seguro, alerta, ataque];
             graficaSeguridad.update();
         })
         .catch(error => {
             console.error("Error al cargar eventos:", error);
+            setEstado("Alerta");
         });
 }
 
